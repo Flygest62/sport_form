@@ -3,331 +3,260 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Заявка | Спортивная комиссия ППО</title>
+    <title>Конструктор заявок | Спортивная комиссия ППО</title>
     <style>
         :root {
             --bg-dark: #0f143a;
             --card-bg: #182052;
             --gold: #e2b842;
-            --gold-hover: #f3ca52;
             --text-main: #ffffff;
             --text-muted: #b0b8d8;
             --border: #2e3a7a;
             --input-bg: #101640;
+            --danger: #e05252;
+            --success: #38b778;
         }
-
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
-        
         body {
             background: radial-gradient(circle at top, #1e2869 0%, var(--bg-dark) 100%);
             color: var(--text-main);
             min-height: 100vh;
+            padding: 25px 15px;
             display: flex;
             justify-content: center;
-            padding: 20px 15px;
         }
-
-        .container {
-            width: 100%;
-            max-width: 560px;
+        .wrap { width: 100%; max-width: 720px; }
+        .card {
             background: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 30px 25px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 22px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.35);
         }
-
-        .header {
-            text-align: center;
-            margin-bottom: 28px;
+        .top-bar { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .logo { width: 64px; height: 64px; border-radius: 50%; border: 2px solid var(--gold); object-fit: cover; }
+        h1 { font-size: 1.3rem; color: var(--gold); text-transform: uppercase; }
+        h2 { font-size: 1.1rem; color: var(--gold); margin-bottom: 15px; }
+        label { display: block; font-size: 0.88rem; color: var(--text-muted); margin-bottom: 5px; }
+        input, select {
+            width: 100%; padding: 10px 12px; background: var(--input-bg);
+            border: 1px solid var(--border); border-radius: 8px; color: #fff; font-size: 0.92rem;
         }
-
-        .logo {
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--gold);
-            box-shadow: 0 0 20px rgba(226, 184, 66, 0.3);
-            margin-bottom: 15px;
+        input:focus, select:focus { outline: none; border-color: var(--gold); }
+        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+        .field-item {
+            background: var(--input-bg); border: 1px solid var(--border);
+            border-radius: 10px; padding: 12px; margin-bottom: 10px;
         }
-
-        .header h1 {
-            font-size: 1.45rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--gold);
-            margin-bottom: 6px;
+        .field-item-head { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
+        .btn {
+            padding: 10px 16px; border: none; border-radius: 8px; font-weight: 600;
+            cursor: pointer; font-size: 0.9rem; transition: 0.2s;
         }
-
-        .header p {
-            font-size: 0.9rem;
-            color: var(--text-muted);
+        .btn-gold { background: var(--gold); color: #0f143a; }
+        .btn-gold:hover { filter: brightness(1.08); }
+        .btn-outline { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
+        .btn-danger { background: var(--danger); color: #fff; padding: 8px 12px; }
+        .btn-sm { padding: 6px 10px; font-size: 0.8rem; }
+        .form-list-item {
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+            padding: 14px; background: var(--input-bg); border: 1px solid var(--border);
+            border-radius: 10px; margin-bottom: 10px;
         }
-
-        .field-group { margin-bottom: 18px; }
-        
-        label {
-            display: block;
-            font-size: 0.92rem;
-            font-weight: 600;
-            margin-bottom: 7px;
-            color: #e6e9f8;
-        }
-
-        .req { color: var(--gold); }
-
-        input[type="text"], input[type="tel"], input[type="number"], select, textarea {
-            width: 100%;
-            padding: 12px 14px;
-            background: var(--input-bg);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: var(--text-main);
-            font-size: 0.95rem;
-            transition: border-color 0.2s;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: var(--gold);
-        }
-
-        textarea { resize: vertical; min-height: 80px; }
-
-        /* Радио-кнопки в виде плашек (для размеров, курса и т.д.) */
-        .chips-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .chip-label {
-            cursor: pointer;
-            padding: 9px 15px;
-            background: var(--input-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: all 0.2s;
-            user-select: none;
-        }
-
-        .chip-input { display: none; }
-        .chip-input:checked + .chip-label {
-            background: var(--gold);
-            color: #0f143a;
-            border-color: var(--gold);
-            font-weight: 700;
-        }
-
-        /* Чекбоксы */
-        .checkbox-wrap {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-
-        .checkbox-wrap input {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--gold);
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 14px;
-            margin-top: 10px;
-            background: linear-gradient(135deg, var(--gold) 0%, #c89b28 100%);
-            color: #0f143a;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.05rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-            transition: transform 0.15s, box-shadow 0.2s;
-        }
-
-        .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(226, 184, 66, 0.35);
-        }
-
-        .btn-submit:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .success-screen {
-            display: none;
-            text-align: center;
-            padding: 30px 10px;
-        }
-
-        .success-screen h2 { color: var(--gold); margin-bottom: 10px; }
-        .success-screen p { color: var(--text-muted); margin-bottom: 20px; }
+        .badge { padding: 3px 8px; border-radius: 6px; font-size: 0.78rem; font-weight: 700; }
+        .badge-on { background: rgba(56,183,120,0.2); color: var(--success); }
+        .badge-off { background: rgba(224,82,82,0.2); color: var(--danger); }
+        .link-box { color: var(--gold); font-size: 0.85rem; word-break: break-all; display: block; margin-top: 4px; }
+        #admin-panel { display: none; }
     </style>
 </head>
 <body>
-
-<div class="container">
-    <div class="header">
-        <img src="logo.png" alt="Спортивная комиссия ППО" class="logo" onerror="this.style.display='none'">
-        <h1 id="form-title">Заявка в Спортивную комиссию</h1>
-        <p id="form-subtitle">Первичная профсоюзная организация</p>
+<div class="wrap">
+    <!-- Вход по паролю -->
+    <div class="card" id="login-box">
+        <div class="top-bar">
+            <img src="/logo.png" class="logo" onerror="this.style.display='none'">
+            <div>
+                <h1>Спортивная комиссия ППО</h1>
+                <p style="color:var(--text-muted); font-size:0.9rem;">Панель создания наборов для волонтёров</p>
+            </div>
+        </div>
+        <div style="display:flex; gap:10px;">
+            <input type="password" id="pass-input" placeholder="Введите пароль администратора">
+            <button class="btn btn-gold" onclick="login()">Войти</button>
+        </div>
     </div>
 
-    <form id="dynamic-form">
-        <div id="fields-container"></div>
-        <button type="submit" class="btn-submit" id="submit-btn">Отправить заявку</button>
-    </form>
+    <!-- Основной конструктор -->
+    <div id="admin-panel">
+        <div class="card">
+            <div class="top-bar">
+                <img src="/logo.png" class="logo" onerror="this.style.display='none'">
+                <div>
+                    <h1>Новый набор волонтёров</h1>
+                    <p style="color:var(--text-muted); font-size:0.88rem;">Настрой поля и получи готовую ссылку для публикации</p>
+                </div>
+            </div>
 
-    <div class="success-screen" id="success-screen">
-        <h2>✅ Заявка принята!</h2>
-        <p>Данные успешно переданы в Спортивную комиссию ППО.</p>
-        <button class="btn-submit" onclick="location.reload()">Отправить ещё одну</button>
+            <div style="margin-bottom:12px;">
+                <label>Название мероприятия *</label>
+                <input type="text" id="f-title" placeholder="Например: Набор волонтёров на Кубок Ректора по волейболу">
+            </div>
+            <div style="margin-bottom:18px;">
+                <label>Описание (дата, место, бонусы волонтёрам)</label>
+                <input type="text" id="f-subtitle" placeholder="25 ноября • Спорткомплекс • Освобождение от пар + мерч">
+            </div>
+
+            <h2>Поля анкеты волонтёра</h2>
+            <div id="builder-fields"></div>
+
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:15px;">
+                <button class="btn btn-outline" onclick="addField()">+ Добавить поле</button>
+                <button class="btn btn-gold" onclick="publishForm()">Создать и получить ссылку</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Активные и архивные наборы</h2>
+            <div id="forms-list">Загрузка...</div>
+        </div>
     </div>
 </div>
 
 <script>
-    // ==========================================
-    // КОНФИГУРАЦИЯ ФОРМЫ (МЕНЯЙ ПОЛЯ ЗДЕСЬ)
-    // ==========================================
-    const CONFIG = {
-        apiUrl: "http://104.143.218.8:8000/api/submit", // Укажи свой IP/домен с FastAPI
-        formName: "Заявка на экипировку / мероприятие",
-        title: "Заявка на спортивную форму",
-        subtitle: "Спортивная комиссия ППО • Заполните данные ниже"
-    };
+    let ADMIN_PASS = localStorage.getItem("ppo_admin_pass") || "";
 
-    // Типы полей: text, tel, number, select, chips, checkbox, textarea
-    const FORM_FIELDS = [
-        { id: "fio", label: "ФИО полностью", type: "text", placeholder: "Магомедов Испай Магомедович", required: true },
-        { id: "faculty", label: "Факультет / Институт", type: "select", required: true, options: [
-            "Инженерно-технологический", "Экономический", "Юридический", "Физико-математический", "Другой"
-        ]},
-        { id: "course_group", label: "Курс и группа", type: "text", placeholder: "2 курс, 204 группа", required: true },
-        { id: "sport", label: "Вид спорта / Секция", type: "select", required: true, options: [
-            "Волейбол", "Футбол", "Баскетбол", "Настольный теннис", "Лёгкая атлетика", "Киберспорт"
-        ]},
-        { id: "size", label: "Размер формы", type: "chips", required: true, options: ["XS", "S", "M", "L", "XL", "2XL", "3XL"] },
-        { id: "jersey_name", label: "Фамилия и номер на форму", type: "text", placeholder: "МАГОМЕДОВ — № 7", required: false },
-        { id: "phone", label: "Номер телефона", type: "tel", placeholder: "+7 (999) 000-00-00", required: true },
-        { id: "telegram", label: "Ник в Telegram", type: "text", placeholder: "@username", required: true },
-        { id: "profsoyuz", label: "Являюсь членом профсоюза (ППО)", type: "checkbox", required: true },
-        { id: "comment", label: "Дополнительный комментарий", type: "textarea", placeholder: "Пожелания или примечания...", required: false }
+    // Готовый стартовый шаблон для волонтёров (можно менять перед созданием)
+    let fields = [
+        { label: "ФИО полностью", type: "text", placeholder: "Иванов Иван Иванович", options: "", required: true },
+        { label: "Факультет, курс и группа", type: "text", placeholder: "Физмат, 2 курс, 201 гр.", options: "", required: true },
+        { label: "Желаемая роль волонтёра", type: "select", placeholder: "", options: "Встреча и навигация команд, Судейский секретариат, Медиа (фото/видео), Техническая группа / инвентарь, Любая помощь", required: true },
+        { label: "Удобное время дежурства", type: "chips", placeholder: "", options: "Утро (09:00–13:00), День (13:00–17:00), Весь день", required: true },
+        { label: "Размер футболки волонтёра", type: "chips", placeholder: "", options: "XS, S, M, L, XL, 2XL", required: true },
+        { label: "Телефон для связи", type: "tel", placeholder: "+7 (999) 000-00-00", options: "", required: true },
+        { label: "Ник в Telegram", type: "text", placeholder: "@username", options: "", required: true },
+        { label: "Состою в профсоюзе (ППО)", type: "checkbox", placeholder: "", options: "", required: false }
     ];
 
-    // ==========================================
-    // ЛОГИКА ГЕНЕРАЦИИ И ОТПРАВКИ
-    // ==========================================
-    document.getElementById("form-title").textContent = CONFIG.title;
-    document.getElementById("form-subtitle").textContent = CONFIG.subtitle;
+    if (ADMIN_PASS) checkAuth();
 
-    const container = document.getElementById("fields-container");
+    async function login() {
+        ADMIN_PASS = document.getElementById("pass-input").value.trim();
+        await checkAuth();
+    }
 
-    FORM_FIELDS.forEach(field => {
-        const group = document.createElement("div");
-        group.className = "field-group";
-
-        if (field.type === "checkbox") {
-            group.innerHTML = `
-                <label class="checkbox-wrap">
-                    <input type="checkbox" name="${field.id}" ${field.required ? "required" : ""}>
-                    <span>${field.label} ${field.required ? '<span class="req">*</span>' : ''}</span>
-                </label>
-            `;
-            container.appendChild(group);
-            return;
+    async function checkAuth() {
+        const res = await fetch("/api/admin/forms", { headers: { "X-Admin-Pass": ADMIN_PASS } });
+        if (res.ok) {
+            localStorage.setItem("ppo_admin_pass", ADMIN_PASS);
+            document.getElementById("login-box").style.display = "none";
+            document.getElementById("admin-panel").style.display = "block";
+            renderBuilder();
+            loadForms();
+        } else {
+            alert("Неверный пароль");
+            localStorage.removeItem("ppo_admin_pass");
         }
+    }
 
-        const label = document.createElement("label");
-        label.innerHTML = `${field.label} ${field.required ? '<span class="req">*</span>' : ''}`;
-        group.appendChild(label);
-
-        if (field.type === "select") {
-            const select = document.createElement("select");
-            select.name = field.id;
-            if (field.required) select.required = true;
-            select.innerHTML = `<option value="" disabled selected>Выберите из списка...</option>` +
-                field.options.map(opt => `<option value="${opt}">${opt}</option>`).join("");
-            group.appendChild(select);
-        } 
-        else if (field.type === "chips") {
-            const chipsDiv = document.createElement("div");
-            chipsDiv.className = "chips-group";
-            field.options.forEach((opt, idx) => {
-                const uid = `${field.id}_${idx}`;
-                chipsDiv.innerHTML += `
-                    <div>
-                        <input type="radio" id="${uid}" name="${field.id}" value="${opt}" class="chip-input" ${field.required && idx === 0 ? "required" : ""}>
-                        <label for="${uid}" class="chip-label">${opt}</label>
+    function renderBuilder() {
+        const box = document.getElementById("builder-fields");
+        box.innerHTML = "";
+        fields.forEach((f, idx) => {
+            const needOptions = (f.type === "select" || f.type === "chips");
+            box.innerHTML += `
+                <div class="field-item">
+                    <div class="field-item-head">
+                        <input type="text" value="${f.label}" placeholder="Название вопроса" onchange="fields[${idx}].label=this.value" style="flex:2;">
+                        <select onchange="fields[${idx}].type=this.value; renderBuilder();" style="flex:1;">
+                            <option value="text" ${f.type==='text'?'selected':''}>Текст</option>
+                            <option value="tel" ${f.type==='tel'?'selected':''}>Телефон</option>
+                            <option value="select" ${f.type==='select'?'selected':''}>Выпадающий список</option>
+                            <option value="chips" ${f.type==='chips'?'selected':''}>Кнопки выбора</option>
+                            <option value="textarea" ${f.type==='textarea'?'selected':''}>Большой текст</option>
+                            <option value="checkbox" ${f.type==='checkbox'?'selected':''}>Галочка (Да/Нет)</option>
+                        </select>
+                        <button class="btn btn-danger" onclick="fields.splice(${idx},1); renderBuilder();">✕</button>
                     </div>
-                `;
-            });
-            group.appendChild(chipsDiv);
-        } 
-        else if (field.type === "textarea") {
-            const ta = document.createElement("textarea");
-            ta.name = field.id;
-            ta.placeholder = field.placeholder || "";
-            if (field.required) ta.required = true;
-            group.appendChild(ta);
-        } 
-        else {
-            const input = document.createElement("input");
-            input.type = field.type;
-            input.name = field.id;
-            input.placeholder = field.placeholder || "";
-            if (field.required) input.required = true;
-            group.appendChild(input);
-        }
+                    ${needOptions
+                        ? `<input type="text" value="${f.options}" placeholder="Варианты через запятую (например: S, M, L, XL)" onchange="fields[${idx}].options=this.value">`
+                        : (f.type !== 'checkbox' ? `<input type="text" value="${f.placeholder}" placeholder="Подсказка внутри поля (необязательно)" onchange="fields[${idx}].placeholder=this.value">` : '')
+                    }
+                </div>
+            `;
+        });
+    }
 
-        container.appendChild(group);
-    });
+    function addField() {
+        fields.push({ label: "Новый вопрос", type: "text", placeholder: "", options: "", required: true });
+        renderBuilder();
+    }
 
-    document.getElementById("dynamic-form").addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const btn = document.getElementById("submit-btn");
-        btn.disabled = true;
-        btn.textContent = "Отправка...";
+    async function publishForm() {
+        const title = document.getElementById("f-title").value.trim();
+        const subtitle = document.getElementById("f-subtitle").value.trim();
+        if (!title) return alert("Укажите название мероприятия!");
 
-        const formData = new FormData(e.target);
-        const answers = [];
+        const formattedFields = fields.map((f, i) => ({
+            id: "field_" + i,
+            label: f.label,
+            type: f.type,
+            placeholder: f.placeholder,
+            options: f.options ? f.options.split(",").map(s => s.trim()).filter(Boolean) : [],
+            required: f.required
+        }));
 
-        FORM_FIELDS.forEach(field => {
-            let val = formData.get(field.id);
-            if (field.type === "checkbox") val = val ? "Да" : "Нет";
-            answers.push({ label: field.label, value: val || "—" });
+        const res = await fetch("/api/admin/forms", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "X-Admin-Pass": ADMIN_PASS },
+            body: JSON.stringify({ title, subtitle, fields: formattedFields })
         });
 
-        try {
-            const res = await fetch(CONFIG.apiUrl, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    form_name: CONFIG.formName,
-                    answers: answers
-                })
-            });
-
-            if (!res.ok) throw new Error("Ошибка сервера");
-
-            document.getElementById("dynamic-form").style.display = "none";
-            document.getElementById("success-screen").style.display = "block";
-        } catch (err) {
-            alert("Не удалось отправить заявку. Проверьте соединение или настройки сервера.");
-            btn.disabled = false;
-            btn.textContent = "Отправить заявку";
+        if (res.ok) {
+            const data = await res.json();
+            const fullUrl = `${location.origin}/f/${data.slug}`;
+            prompt("Форма создана! Скопируйте ссылку для рассылки волонтёрам:", fullUrl);
+            document.getElementById("f-title").value = "";
+            document.getElementById("f-subtitle").value = "";
+            loadForms();
         }
-    });
+    }
+
+    async function loadForms() {
+        const res = await fetch("/api/admin/forms", { headers: { "X-Admin-Pass": ADMIN_PASS } });
+        const list = await res.json();
+        const container = document.getElementById("forms-list");
+        if (!list.length) {
+            container.innerHTML = "<p style='color:var(--text-muted)'>Пока нет созданных наборов.</p>";
+            return;
+        }
+        container.innerHTML = list.map(item => {
+            const url = `${location.origin}/f/${item.slug}`;
+            return `
+                <div class="form-list-item">
+                    <div>
+                        <strong>${item.title}</strong>
+                        <span class="badge ${item.is_active ? 'badge-on' : 'badge-off'}">${item.is_active ? 'Открыт' : 'Закрыт'}</span>
+                        <span style="font-size:0.82rem; color:var(--text-muted); margin-left:6px;">Заявок: ${item.count}</span>
+                        <a href="${url}" target="_blank" class="link-box">${url}</a>
+                    </div>
+                    <div style="display:flex; gap:6px;">
+                        <button class="btn btn-outline btn-sm" onclick="navigator.clipboard.writeText('${url}'); alert('Ссылка скопирована!')">Копировать</button>
+                        <button class="btn btn-outline btn-sm" onclick="toggleForm('${item.slug}')">${item.is_active ? 'Закрыть' : 'Открыть'}</button>
+                    </div>
+                </div>
+            `;
+        }).join("");
+    }
+
+    async function toggleForm(slug) {
+        await fetch(`/api/admin/forms/${slug}/toggle`, {
+            method: "POST",
+            headers: { "X-Admin-Pass": ADMIN_PASS }
+        });
+        loadForms();
+    }
 </script>
 </body>
 </html>
